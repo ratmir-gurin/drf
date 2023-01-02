@@ -10,9 +10,11 @@
 
 #### UI does not use django model and base. UI accesses data via http in api application.
 
-example of adding a camera to DB: 
+example of adding a data to DB: 
 
+```json
 {
 "title": "NVIP-8SD-6540/25/F",
 "description": "8 MPX, matryca CMOS, 1/2.8”, SONY STARVIS"
 }
+```
