@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+<body>
+    <div class="main-container">
+        <h1>The List from 127.0.0.1:8000</h1>
+    <div class = "camera-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for camera in response %}
+                <tr>
+                    <td>{{ camera.id }}</td>
+                    <td>{{ camera.title }}</td>
+                    <td>{{ camera.description }}</td>
+                    <td>
+                        <form action="{% url 'deleteCamera' pk=camera.id %}" method="DELETE">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class = "create-camera">
+        <a href = 'http://127.0.0.1:8001/ui_app/create-camera/'>Click to add Camera</a>
+    </div>
+</body>
+
+
+
+</body>
+</html>
