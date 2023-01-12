@@ -26,7 +26,6 @@ class ItemsMap extends React.Component{
             <div>
                 <SearchBar filterText = {this.state.filterText} onFilterTextChange = {this.handleFilterTextChange}/>
                 <ItemsTable filterText = {this.state.filterText}/>
-                {/* <ItemCreate /> */}
             </div>
         )
     }

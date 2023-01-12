@@ -11,25 +11,23 @@ class ModalCreate extends React.Component{
           title: "",
           description: "",
         };
-
-        // this.toggle = this.toggle.bind(this);
     }
 
-    // state = {
-    //     IsModalOpen: false,
-    //     title: "",
-    //     description: "",
-    //   };
- 
-    // const title = this,
-
     getText = (e) => {
+        console.log("1 start");
         e.preventDefault();
-        console.log(e.target.title.value, e.target.description.value);
+        console.log("2");
+        console.log(e.target.title.value, e.target.description.value, this.props.flag);
+        console.log("3");
         this.props.handleCreateRow(e.target.title.value, e.target.description.value);
+        console.log("4");
         console.log("ModalCreate -> getText");
-        console.log("e.target.title.value, e.target.description.value", e.target.title.value, e.target.description.value);
-        this.props.handleChangeFlag();
+        console.log("5");
+        console.log("e.target.title.value, e.target.description.value", e.target.title.value, e.target.description.value, this.props.flag);
+        console.log("6");
+        // this.props.handleChangeFlag();
+        console.log("e.target.title.value, e.target.description.value", e.target.title.value, e.target.description.value, this.props.flag);
+        console.log("7 finish");
       }
 
     
@@ -41,7 +39,7 @@ class ModalCreate extends React.Component{
         return(
 
             <>
-            <Modal isOpen={this.props.IsModalOpenCreate} toggle={this.props.close} >
+            <Modal isOpen={this.props.IsModalOpenPost} toggle={this.props.close} >
                 <ModalHeader toggle={this.props.close}>Creating a new element</ModalHeader>
                 <ModalBody>
                 <form onSubmit={this.getText}>

@@ -3,19 +3,25 @@ import axios from "axios";
 import { API_URL, API_URL_CREATE } from "../constants";
 import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import ItemsRow from "./ItemsRow";
-import ModalDelete from "./Modals/ModalCreate";
+import ModalEdit from "./Modals/ModalEdit";
 import ModalCreate from "./Modals/ModalCreate";
 
 class ItemsTable extends React.Component{
     constructor(props) {
         super(props);
-        this.deleteRow = this.deleteRow.bind(this);     
+        this.deleteRow = this.deleteRow.bind(this);
+        this.postRow = this.postRow.bind(this);
+        this.putRow = this.putRow.bind(this);
+        this.togglePut = this.togglePut.bind(this);
+        // this.changeFlag = this.changeFlag.bind(this);          
     }
 
     state = {
         items: [],
         IsModalOpenDelete: false,
-        IsModalOpenCreate: false,
+        IsModalOpenPost: false,
+        IsModalOpenPut: false,
+        id: "",
         title: "",
         description: "",
         flag: false,
@@ -27,19 +33,14 @@ class ItemsTable extends React.Component{
     }   
 
     componentDidUpdate(){
+        console.log("ItemTable -> changeFlag from componentDidUpdate", this.state.flag);
         if (this.state.flag) {
             this.getRows()
-            // this.state.flag = false
             this.changeFlag();
-            console.log("ItemTable -> changeFlag from componentDidUpdate", this.state.flag);
+            console.log("ItemTable -> changeFlag from componentDidUpdate if_block", this.state.flag);
         }
-
+        console.log("ItemTable -> changeFlag from componentDidUpdate after_if_block", this.state.flag);
     }  
-
-    // changeFlag(){
-    //     this.state.flag = !this.state.flag
-    //     console.log("ItemTable -> changeFlag from function changeFlag", this.state.flag);
-    // }
 
     changeFlag = () => {
         this.setState({
@@ -57,8 +58,8 @@ class ItemsTable extends React.Component{
         });
     }   
 
-
-    deleteRow = id => {
+    // Delete
+    deleteRow(id){
         axios
         .delete(API_URL+id)
         .then(() => {
@@ -68,8 +69,16 @@ class ItemsTable extends React.Component{
         });
     }
 
-    createRow(title, description){
-        console.log("ItemTable -> createRow axios");
+    toggleDelete = () => {
+        this.setState({
+        IsModalOpenDelete: !this.state.IsModalOpenDelete,
+        })
+    }
+
+
+    // Create
+    postRow(title, description){
+        console.log("ItemTable -> postRow axios");
         console.log("title, description", title, description);
         axios
         .post(API_URL_CREATE, {
@@ -77,34 +86,64 @@ class ItemsTable extends React.Component{
             description: description
         })
         .then(() => {
+            this.changeFlag()
+            this.togglePost()
             console.log("created successfully!")
         });
-    }   
-
-
-    toggleDelete = () => {
-            this.setState({
-            IsModalOpenDelete: !this.state.IsModalOpenDelete,
-            })
+    }
+ 
+    togglePost(){
+        this.setState({
+        IsModalOpenPost: !this.state.IsModalOpenPost,
+        })
     }
 
-    toggleCreate = () => {
-            this.setState({
-            IsModalOpenCreate: !this.state.IsModalOpenCreate,
-            })
+
+
+    // handleCallbackCreate = (title, description) =>{
+    //     console.log("ItemTable -> handleCallbackCreate");
+    //     console.log("title, description", title, description);
+    //     this.setState( {title: title, description: description} )
+    //     this.postRow(this.state.title, this.state.description)
+    // }
+
+
+    // Put (Edit)
+    togglePut(id){
+        // this.state.id: id;
+        console.log("togglePut item.id", id)
+        console.log("IsModalOpenPut", this.state.IsModalOpenPut)
+        this.setState({
+        IsModalOpenPut: !this.state.IsModalOpenPut,
+        })
+        console.log("IsModalOpenPut", this.state.IsModalOpenPut)
     }
 
-    handleCallbackCreate = (title, description) =>{
-        console.log("ItemTable -> handleCallbackCreate");
-        console.log("title, description", title, description);
-        this.setState( {title: title, description: description} )
-        this.createRow(this.state.title, this.state.description)
+    // handleCallbackPut = (id, title, description) =>{
+    //     console.log("ItemTable -> handleCallbackCreate");
+    //     console.log("id, title, description", id, title, description);
+    //     // this.setState( {title: title, description: description} )
+    //     this.putRow(id, title, description)
+    // }
+
+
+
+    putRow(id){
+        console.log("putRow");
+        // console.log("title, description", title, description);
+        const api = API_URL+id
+        axios
+        .put(api, {
+            title: "title",
+            description: "description"
+        })
+        .then();
+        console.log("PUT successfully!")
     }
+
 
 
     render(){
-        // const {title} = this.state.title;
-        // const {description} = this.state.description;
         console.log("render ItemTable");
         const filterText = this.props.filterText;
         const rows = [];
@@ -112,7 +151,7 @@ class ItemsTable extends React.Component{
             if (element.title.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
                 return true;
               }
-            rows.push(<ItemsRow item={element} key = {element.id} onDeleteRow = {this.deleteRow}/>)            
+            rows.push(<ItemsRow item={element} key={element.id} onDeleteRow={this.deleteRow} onPutRow={this.putRow} onTogglePut={this.togglePut}/>)            
         });
 
         
@@ -144,17 +183,27 @@ class ItemsTable extends React.Component{
             </Modal>
             
             
-            <Button color="primary" onClick={() => this.toggleCreate()} data-modal="modal-one" >Create</Button>
+            <Button color="primary" onClick={() => this.togglePost()} data-modal="modal-one" >Create</Button>
             <ModalCreate 
-                IsModalOpenCreate = {this.state.IsModalOpenCreate} 
-                close = {() => this.toggleCreate()} 
+                IsModalOpenPost = {this.state.IsModalOpenPost} 
+                close = {() => this.togglePost()} 
                 title = {this.state.title} 
                 description = {this.state.description}
-                handleCreateRow = {this.createRow}
-                handleChangeFlag = {() => this.changeFlag()}
-                flag = {this.state.flag}
-                />
-           {/* {title}{description} */}
+                handleCreateRow = {this.postRow}
+            />
+
+
+            <ModalEdit 
+                IsModalOpenPut = {this.state.IsModalOpenPut}
+                handleTogglePut = {() => this.togglePut()} 
+                title = {this.props.item_row} 
+                // description = {item.description}
+                // id = {item.id} 
+                // handlePutRow = {this.putRow}
+                // handleChangeFlag = {() => this.changeFlag()}
+                // flag = {this.state.flag}
+            />
+
 
             </>
         );
