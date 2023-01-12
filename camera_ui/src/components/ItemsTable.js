@@ -12,7 +12,7 @@ class ItemsTable extends React.Component{
         this.deleteRow = this.deleteRow.bind(this);
         this.postRow = this.postRow.bind(this);
         this.putRow = this.putRow.bind(this);
-        this.togglePut = this.togglePut.bind(this);
+        // this.togglePut = this.togglePut.bind(this);
         // this.changeFlag = this.changeFlag.bind(this);          
     }
 
@@ -92,7 +92,7 @@ class ItemsTable extends React.Component{
         });
     }
  
-    togglePost(){
+    togglePost = () => {
         this.setState({
         IsModalOpenPost: !this.state.IsModalOpenPost,
         })
@@ -109,14 +109,20 @@ class ItemsTable extends React.Component{
 
 
     // Put (Edit)
-    togglePut(id){
-        // this.state.id: id;
-        console.log("togglePut item.id", id)
-        console.log("IsModalOpenPut", this.state.IsModalOpenPut)
+    togglePut = (id) => {
+        // console.log("togglePut item.id", id)
+        // console.log("IsModalOpenPut", this.state.IsModalOpenPut)
         this.setState({
         IsModalOpenPut: !this.state.IsModalOpenPut,
+        id: id,
+        // // title: title,
+        // description: description,
         })
-        console.log("IsModalOpenPut", this.state.IsModalOpenPut)
+        // Modify State Directly
+        // this.state.title = title;
+        // console.log(" this.state.id",  this.state.id)
+        // console.log(" this.state.title",  this.state.title)
+        // console.log(" this.state.description",  this.state.description)
     }
 
     // handleCallbackPut = (id, title, description) =>{
@@ -128,17 +134,20 @@ class ItemsTable extends React.Component{
 
 
 
-    putRow(id){
+    putRow(id, title, description){
         console.log("putRow");
         // console.log("title, description", title, description);
-        const api = API_URL+id
+        const api = API_URL+id+"/"
         axios
         .put(api, {
-            title: "title",
-            description: "description"
+            title: title,
+            description: description
         })
-        .then();
-        console.log("PUT successfully!")
+        .then(() => {
+            this.changeFlag()
+            this.togglePut()
+            console.log("PUT successfully!")
+        });
     }
 
 
@@ -151,7 +160,11 @@ class ItemsTable extends React.Component{
             if (element.title.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
                 return true;
               }
-            rows.push(<ItemsRow item={element} key={element.id} onDeleteRow={this.deleteRow} onPutRow={this.putRow} onTogglePut={this.togglePut}/>)            
+            rows.push(<ItemsRow item={element} key={element.id} onDeleteRow={this.deleteRow} onPutRow={this.putRow} onTogglePut={this.togglePut}/>
+            
+            
+            
+            )            
         });
 
         
@@ -198,8 +211,10 @@ class ItemsTable extends React.Component{
                 handleTogglePut = {() => this.togglePut()} 
                 title = {this.props.item_row} 
                 // description = {item.description}
-                // id = {item.id} 
-                // handlePutRow = {this.putRow}
+                id_edit = {this.state.id}
+                // title_edit = {this.state.title}
+                // description_id = {this.state.description}
+                handlePutRow = {this.putRow}
                 // handleChangeFlag = {() => this.changeFlag()}
                 // flag = {this.state.flag}
             />
