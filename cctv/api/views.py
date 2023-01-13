@@ -27,7 +27,7 @@ def cameraList(request):
 
     return JsonResponse(serializer.data, safe=False)
 
-@api_view(['GET','DELETE'])
+@api_view(['GET','DELETE', 'PUT'])
 def cameraDetail(request, pk):
     if request.method == 'GET':
         camera = Camera.objects.get(id=pk)
@@ -36,7 +36,15 @@ def cameraDetail(request, pk):
     elif request.method == 'DELETE':
         camera = Camera.objects.get(id=pk)
         camera.delete()
-        return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({'message': 'Item was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+    elif request.method == 'PUT':
+        camera_data = JSONParser().parse(request) 
+        camera = Camera.objects.get(id=pk)
+        serializer = CameraSerializer(camera, data=camera_data)
+        if serializer.is_valid(): 
+            serializer.save() 
+            return JsonResponse(serializer.data)
+        return JsonResponse(camera_data) 
 
 
 @api_view(['POST'])
