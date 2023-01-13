@@ -12,9 +12,9 @@ class ModalCreate extends React.Component{
         return(
 
             <>
-            <Modal isOpen={this.props.IsModalOpenPost} toggle={this.props.close} >
+            <Modal isOpen={this.props.IsModalOpenPost} toggle={this.props.handleTogglePut} >
             <form onSubmit={this.getText}>
-            <ModalHeader toggle={this.props.close}>Creating a new element</ModalHeader>
+            <ModalHeader toggle={this.props.handleTogglePut}>Creating a new element</ModalHeader>
                 <ModalBody>
                     <div className="form-outline"></div>
                         <label htmlFor="title">Title</label> <br></br>

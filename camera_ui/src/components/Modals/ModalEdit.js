@@ -6,8 +6,6 @@ class ModalEdit extends React.Component{
     getData = (e) => {
         e.preventDefault();
         this.props.handlePutRow(this.props.id_edit, e.target.title.value, e.target.description.value);
-        console.log("ModalEdit -> getData");
-        console.log("e.target.title.value, e.target.description.value", e.target.title.value, e.target.description.value);
       }
 
       render(){ 

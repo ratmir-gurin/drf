@@ -1,26 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 class ModalDelete extends React.Component{
 
     getData = (e) => {
         e.preventDefault();
-        this.props.handlePutRow(this.props.id_edit, e.target.title.value, e.target.description.value);
-        console.log("ModalEdit -> getData");
-        console.log("e.target.title.value, e.target.description.value", e.target.title.value, e.target.description.value);
+        this.props.handleDeleteRow(this.props.id_delete);
     }
 
     render(){ 
         console.log("render ModalEdit");
         return(
-            <><Modal isOpen={this.props.IsModalOpenPut} toggle={this.props.handleTogglePut} >
-            <form onSubmit={this.getData}>
-                <ModalHeader toggle={this.props.handleTogglePut}>Delete Notification new</ModalHeader>
+            <><Modal isOpen={this.props.IsModalOpenDelete} toggle={this.props.handleToggleDelete} >
+            <form>
+                <ModalHeader toggle={this.props.handleToggleDelete}>Delete Notification new</ModalHeader>
                 <ModalBody>
                 <p>Item was deleted.</p>
                 </ModalBody>
                 <ModalFooter>
-                <Button color="primary">Submit</Button>
+                <Button color="primary" onClick={() => this.props.handleToggleDelete()}>Ok</Button>
                 </ModalFooter>
             </form>
             </Modal></>
@@ -28,4 +26,4 @@ class ModalDelete extends React.Component{
     }
 }
 
-export default ModalEdit;
+export default ModalDelete;

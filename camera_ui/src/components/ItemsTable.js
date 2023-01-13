@@ -5,6 +5,7 @@ import { Table, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "react
 import ItemsRow from "./ItemsRow";
 import ModalEdit from "./Modals/ModalEdit";
 import ModalCreate from "./Modals/ModalCreate";
+import ModalDelete from "./Modals/ModalDelete";
 
 class ItemsTable extends React.Component{
     constructor(props) {
@@ -12,8 +13,6 @@ class ItemsTable extends React.Component{
         this.deleteRow = this.deleteRow.bind(this);
         this.postRow = this.postRow.bind(this);
         this.putRow = this.putRow.bind(this);
-        // this.togglePut = this.togglePut.bind(this);
-        // this.changeFlag = this.changeFlag.bind(this);          
     }
 
     state = {
@@ -33,20 +32,17 @@ class ItemsTable extends React.Component{
     }   
 
     componentDidUpdate(){
-        console.log("ItemTable -> changeFlag from componentDidUpdate", this.state.flag);
         if (this.state.flag) {
             this.getRows()
             this.changeFlag();
-            console.log("ItemTable -> changeFlag from componentDidUpdate if_block", this.state.flag);
         }
-        console.log("ItemTable -> changeFlag from componentDidUpdate after_if_block", this.state.flag);
     }  
 
     changeFlag = () => {
         this.setState({
             flag: !this.state.flag,
         })
-}
+    }
 
 
     getRows = () => {
@@ -76,7 +72,7 @@ class ItemsTable extends React.Component{
     }
 
 
-    // Create
+    // POST (Create)
     postRow(title, description){
         console.log("ItemTable -> postRow axios");
         console.log("title, description", title, description);
@@ -99,44 +95,17 @@ class ItemsTable extends React.Component{
     }
 
 
-
-    // handleCallbackCreate = (title, description) =>{
-    //     console.log("ItemTable -> handleCallbackCreate");
-    //     console.log("title, description", title, description);
-    //     this.setState( {title: title, description: description} )
-    //     this.postRow(this.state.title, this.state.description)
-    // }
-
-
     // Put (Edit)
     togglePut = (id) => {
-        // console.log("togglePut item.id", id)
-        // console.log("IsModalOpenPut", this.state.IsModalOpenPut)
         this.setState({
         IsModalOpenPut: !this.state.IsModalOpenPut,
         id: id,
-        // // title: title,
-        // description: description,
         })
-        // Modify State Directly
-        // this.state.title = title;
-        // console.log(" this.state.id",  this.state.id)
-        // console.log(" this.state.title",  this.state.title)
-        // console.log(" this.state.description",  this.state.description)
     }
-
-    // handleCallbackPut = (id, title, description) =>{
-    //     console.log("ItemTable -> handleCallbackCreate");
-    //     console.log("id, title, description", id, title, description);
-    //     // this.setState( {title: title, description: description} )
-    //     this.putRow(id, title, description)
-    // }
-
 
 
     putRow(id, title, description){
         console.log("putRow");
-        // console.log("title, description", title, description);
         const api = API_URL+id+"/"
         axios
         .put(api, {
@@ -166,9 +135,6 @@ class ItemsTable extends React.Component{
             
             )            
         });
-
-        
-
         return(
 
             <><Table striped hover size="sm">
@@ -185,24 +151,23 @@ class ItemsTable extends React.Component{
             </Table>
 
 
-            <Modal isOpen={this.state.IsModalOpenDelete} toggle={() => this.toggleDelete()}>
-                <ModalHeader toggle={() => this.toggleDelete()}>Delete Notification</ModalHeader>
-                <ModalBody>
-                <p>Item was deleted.</p>
-                </ModalBody>
-                <ModalFooter>
-                <Button color="primary" onClick={() => this.toggleDelete()}>Ok</Button>
-                </ModalFooter>
-            </Modal>
-            
+            <ModalDelete 
+                IsModalOpenDelete = {this.state.IsModalOpenDelete}
+                handleToggleDelete = {() => this.toggleDelete()} 
+                title = {this.props.item_row} 
+                id_delete = {this.state.id}
+                handleDeleteRow = {this.deleteRow}
+            />
+
             
             <Button color="primary" onClick={() => this.togglePost()} data-modal="modal-one" >Create</Button>
             <ModalCreate 
                 IsModalOpenPost = {this.state.IsModalOpenPost} 
-                close = {() => this.togglePost()} 
+                handleTogglePut = {() => this.togglePost()} 
                 title = {this.state.title} 
                 description = {this.state.description}
                 handleCreateRow = {this.postRow}
+                
             />
 
 
@@ -210,13 +175,8 @@ class ItemsTable extends React.Component{
                 IsModalOpenPut = {this.state.IsModalOpenPut}
                 handleTogglePut = {() => this.togglePut()} 
                 title = {this.props.item_row} 
-                // description = {item.description}
                 id_edit = {this.state.id}
-                // title_edit = {this.state.title}
-                // description_id = {this.state.description}
                 handlePutRow = {this.putRow}
-                // handleChangeFlag = {() => this.changeFlag()}
-                // flag = {this.state.flag}
             />
 
 
