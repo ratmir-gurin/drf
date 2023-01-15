@@ -3,12 +3,13 @@
 
 ---
 ## To start locally:
-> ### Start CCTV app with command: *python manage.py runserver 127.0.0.1:8000*
-> ### Start UI Django app with command: *python manage.py runserver 127.0.0.1:8001*
-> ### Start UI React app with command: *npm start*
+> ### Start Django API ("cctv" folder) app with command: *python manage.py runserver 127.0.0.1:8000*
+> ### Start UI Django ("ui" folder) app with command: *python manage.py runserver 127.0.0.1:8001*
+> ### Start UI React app ("camera_ui" folder) with command: *npm start*
 
 ---
-#### UI does not use django model and base. UI accesses data via http in api application.
+#### Django UI does not use django model and base directly. Both UI apps receive data via http protocol.
+
 #### There is example to add an item to DB: 
 ```json
 {
