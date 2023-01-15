@@ -9,7 +9,6 @@
 
 ---
 #### UI does not use django model and base. UI accesses data via http in api application.
-
 #### There is example to add an item to DB: 
 ```json
 {
