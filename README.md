@@ -1,18 +1,19 @@
-## Start CCTV app with command: 
-### *python manage.py runserver 127.0.0.1:8000*
-## Start UI app with command: 
-### *python manage.py runserver 127.0.0.1:8001*
-### To install Requests HTTP library for Python run:
-### -> pip install requests
+
+## The project is a web interface for API (developed in django) with the ability to edit the database using the crud. The project has two different ui applications (just for fun). First one implemented with Django (the folder is called "ui") and the second one with React (the folder is called "camera_ui"). CCTV is a folder with Django API. The project uses MongoDB.
 
 ---
-#### IN THE PROJECT UI AND API IMPLEMENTED AS TWO INDEPENDENT PROJECTS.
+## To start locally:
+> ### Start CCTV app with command: *python manage.py runserver 127.0.0.1:8000*
+> ### Start UI Django app with command: *python manage.py runserver 127.0.0.1:8001*
+> ### Start UI React app with command: *npm start*
 
+---
 #### UI does not use django model and base. UI accesses data via http in api application.
 
-example of adding a camera to DB: 
-
+#### There is example to add an item to DB: 
+```json
 {
-"title": "NVIP-8SD-6540/25/F",
-"description": "8 MPX, matryca CMOS, 1/2.8”, SONY STARVIS"
+"title": "Your item's title ",
+"description": "Your item's description"
 }
+```
